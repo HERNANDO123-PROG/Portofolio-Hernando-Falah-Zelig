@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Desktop Experience</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Desktop Background -->
+    <div class="desktop-background wallpaper wallpaper-aurora" id="desktop">
+        <div class="wallpaper-layer" aria-hidden="true"></div>
+        <div class="wallpaper-vignette" aria-hidden="true"></div>
+        <canvas id="matrixCanvas"></canvas>
+        <div class="desktop-icons">
+            <div class="desktop-icon" data-window="about">
+                <div class="icon-image">👤</div>
+                <div class="icon-label">About</div>
+            </div>
+            <div class="desktop-icon" data-window="projects">
+                <div class="icon-image">📁</div>
+                <div class="icon-label">Projects</div>
+            </div>
+            <div class="desktop-icon" data-window="skills">
+                <div class="icon-image">⚙️</div>
+                <div class="icon-label">Skills</div>
+            </div>
+            <div class="desktop-icon" data-window="experience">
+                <div class="icon-image">💼</div>
+                <div class="icon-label">Experience</div>
+            </div>
+            <div class="desktop-icon" data-window="education">
+                <div class="icon-image">🎓</div>
+                <div class="icon-label">Pendidikan</div>
+            </div>
+            <div class="desktop-icon" data-window="certificates">
+                <div class="icon-image">📜</div>
+                <div class="icon-label">Sertifikat</div>
+            </div>
+            <div class="desktop-icon" data-window="contact">
+                <div class="icon-image">📧</div>
+                <div class="icon-label">Contact</div>
+            </div>
+            <div class="desktop-icon" data-window="terminal">
+                <div class="icon-image">💻</div>
+                <div class="icon-label">Terminal</div>
+            </div>
+            <div class="desktop-icon" data-window="music">
+                <div class="icon-image">🎵</div>
+                <div class="icon-label">Music</div>
+            </div>
+            <div class="desktop-icon" data-window="paint">
+                <div class="icon-image">🖌️</div>
+                <div class="icon-label">Paint</div>
+            </div>
+            <div class="desktop-icon" data-window="game">
+                <div class="icon-image">🎮</div>
+                <div class="icon-label">Game</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Windows Container -->
+    <div class="windows-container"></div>
+
+    <!-- Taskbar -->
+    <div class="taskbar">
+        <div class="taskbar-start">
+            <button class="start-button" id="startButton">
+                <span class="start-icon">⊞</span>
+                <span class="start-text">Start</span>
+            </button>
+        </div>
+        <div class="taskbar-apps" id="taskbarApps"></div>
+        <div class="taskbar-tray">
+            <div class="tray-time" id="trayTime"></div>
+        </div>
+    </div>
+
+    <!-- Start Menu -->
+    <div class="start-menu" id="startMenu">
+        <div class="start-menu-header">
+            <div class="user-info">
+                <div class="user-avatar">👨‍💻</div>
+                <div class="user-details">
+                    <div class="user-name">Hernando Falah Zelig</div>
+                    <div class="user-role">Web Developer &amp; AI Engineer</div>
+                </div>
+            </div>
+        </div>
+        <div class="start-menu-apps">
+            <div class="start-menu-item" data-window="about">
+                <span class="menu-icon">👤</span>
+                <span class="menu-text">About Me</span>
+            </div>
+            <div class="start-menu-item" data-window="projects">
+                <span class="menu-icon">💼</span>
+                <span class="menu-text">Projects</span>
+            </div>
+            <div class="start-menu-item" data-window="skills">
+                <span class="menu-icon">⚙️</span>
+                <span class="menu-text">Skills</span>
+            </div>
+            <div class="start-menu-item" data-window="experience">
+                <span class="menu-icon">💼</span>
+                <span class="menu-text">Experience</span>
+            </div>
+            <div class="start-menu-item" data-window="education">
+                <span class="menu-icon">🎓</span>
+                <span class="menu-text">Pendidikan</span>
+            </div>
+            <div class="start-menu-item" data-window="certificates">
+                <span class="menu-icon">📜</span>
+                <span class="menu-text">Sertifikat</span>
+            </div>
+            <div class="start-menu-item" data-window="contact">
+                <span class="menu-icon">📧</span>
+                <span class="menu-text">Contact</span>
+            </div>
+            <div class="start-menu-item" data-window="terminal">
+                <span class="menu-icon">💻</span>
+                <span class="menu-text">Terminal</span>
+            </div>
+            <div class="start-menu-item" data-window="music">
+                <span class="menu-icon">🎵</span>
+                <span class="menu-text">Music</span>
+            </div>
+            <div class="start-menu-item" data-window="paint">
+                <span class="menu-icon">🖌️</span>
+                <span class="menu-text">Paint</span>
+            </div>
+            <div class="start-menu-item" data-window="game">
+                <span class="menu-icon">🎮</span>
+                <span class="menu-text">Snake Game</span>
+            </div>
+        </div>
+        <div class="start-menu-footer">
+            <button class="power-button">⚡</button>
+        </div>
+    </div>
+
+    <!-- Window Templates -->
+    <template id="aboutWindow">
+        <div class="window" data-window-id="about">
+            <div class="window-header">
+                <div class="window-title">
+                    <span class="window-icon">👤</span>
+                    <span>About Me</span>
+                </div>
+                <div class="window-controls">
+                    <button class="window-btn minimize" aria-label="Minimize"></button>
+                    <button class="window-btn maximize" aria-label="Maximize"></button>
+                    <button class="window-btn close" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="about-content">
+                    <div class="about-image">
+                        <div class="image-wrapper">
+                            <div class="glow-effect"></div>
+                            <div class="placeholder-avatar">
+                                <img src="foto.jpeg" alt="Foto profil" class="profile-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <span class="avatar-icon" style="display: none;">👨‍💻</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-text">
+                        <div class="code-block">
+                            <div class="code-line">
+                                <span class="line-number">1</span>
+                                <span class="code-content"><span class="keyword">const</span> <span class="variable">developer</span> = {</span>
+                            </div>
+                            <div class="code-line">
+                                <span class="line-number">2</span>
+                                <span class="code-content">  <span class="property">name</span>: <span class="string">"Hernando Falah Zelig"</span>,</span>
+                            </div>
+                            <div class="code-line">
+                                <span class="line-number">3</span>
+                                <span class="code-content">  <span class="property">role</span>: <span class="string">"Web Developer &amp; AI Engineer"</span>,</span>
+                            </div>
+                            <div class="code-line">
+                                <span class="line-number">4</span>
+                                <span class="code-content">  <span class="property">passion</span>: [</span>
+                            </div>
+                            <div class="code-line">
+                                <span class="line-number">5</span>
+                                <span class="code-content">    <span class="string">"Building responsive and user-friendly web applications"</span>,</span>
+                            </div>
+                            <div class="code-line">
+                                <span class="line-number">6</span>
+                                <span class="code-content">    <span class="string">"Developing AI-based solutions for real-world problems"</span>,</span>
+                            </div>
+                            <div class="code-line">
+                                <span class="line-number">7</span>
+                                <span class="code-content">    <span class="string">"Integrating machine learning into web systems"</span></span>
+                            </div>
+                            <div class="code-line">
+                                <span class="line-number">8</span>
+                                <span class="code-content">    <span class="string">"Continuously learning and creating innovative digital products"</span></span>
+                            </div>
+                            <div class="code-line">
+                                <span class="line-number">9</span>
+                                <span class="code-content">  ],</span>
+                            </div>
+                            <div class="code-line">
+                                <span class="line-number">10</span>
+                                <span class="code-content">  <span class="property">experience</span>: [</span>
+                            </div>
+                            <div class="code-line">
+                                <span class="line-number">11</span>
+                                <span class="code-content">    <span class="string">"Developed responsive web applications using modern frontend and backend technologies"</span>,</span>
+                            </div>
+                            <div class="code-line">
+                                <span class="line-number">12</span>
+                                <span class="code-content">    <span class="string">"Built and experimented with AI / machine learning models for text classification and data analysis"</span>,</span>
+                            </div>
+                            <div class="code-line">
+                                <span class="line-number">13</span>
+                                <span class="code-content">    <span class="string">"Integrated AI features into web projects and deployed applications for real-world use"</span></span>
+                            </div>
+                            <div class="code-line">
+                                <span class="line-number">14</span>
+                                <span class="code-content">  ],</span>
+                            </div>
+                            <div class="code-line">
+                                <span class="line-number">15</span>
+                                <span class="code-content">};</span>
+                            </div>
+                        </div>
+                        <p class="about-description">
+                            Saya adalah Web Developer dan AI Engineer yang fokus membangun aplikasi web modern serta solusi berbasis AI. 
+                            Saya mengintegrasikan machine learning, NLP, dan deep learning untuk menciptakan sistem yang responsif, cerdas, dan berdampak.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="projectsWindow">
+        <div class="window window-projects" data-window-id="projects">
+            <div class="window-header">
+                <div class="window-title">
+                    <span class="window-icon">📁</span>
+                    <span>Projects</span>
+                </div>
+                <div class="window-controls">
+                    <button class="window-btn minimize" aria-label="Minimize"></button>
+                    <button class="window-btn maximize" aria-label="Maximize"></button>
+                    <button class="window-btn close" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="projects-window-inner">
+                    <div class="explorer-details-view" role="presentation">
+                        <div class="explorer-details-header">
+                            <span class="explorer-col explorer-col-name">Nama</span>
+                            <span class="explorer-col explorer-col-modified">Tanggal diubah</span>
+                            <span class="explorer-col explorer-col-type">Jenis</span>
+                            <span class="explorer-col explorer-col-size">Ukuran</span>
+                        </div>
+                        <div class="explorer-details-body">
+                            <button type="button" class="explorer-details-row project-file-item" data-project="diabetic_retinopathy">
+                                <span class="explorer-col explorer-col-name">
+                                    <span class="project-file-icon" aria-hidden="true">📄</span>
+                                    <span class="project-file-name">Diabetic Retinopathy Detection.project</span>
+                                </span>
+                                <span class="explorer-col explorer-col-modified">01/05/2026 14:32</span>
+                                <span class="explorer-col explorer-col-type">File Project</span>
+                                <span class="explorer-col explorer-col-size">28 KB</span>
+                            </button>
+                            <button type="button" class="explorer-details-row project-file-item" data-project="odigi">
+                                <span class="explorer-col explorer-col-name">
+                                    <span class="project-file-icon" aria-hidden="true">📄</span>
+                                    <span class="project-file-name">Website Odigi (OTW DIGITAL).project</span>
+                                </span>
+                                <span class="explorer-col explorer-col-modified">28/04/2026 09:15</span>
+                                <span class="explorer-col explorer-col-type">File Project</span>
+                                <span class="explorer-col explorer-col-size">36 KB</span>
+                            </button>
+                            <button type="button" class="explorer-details-row project-file-item" data-project="chatbot">
+                                <span class="explorer-col explorer-col-name">
+                                    <span class="project-file-icon" aria-hidden="true">📄</span>
+                                    <span class="project-file-name">AI Chatbot Gym.project</span>
+                                </span>
+                                <span class="explorer-col explorer-col-modified">15/04/2026 16:48</span>
+                                <span class="explorer-col explorer-col-type">File Project</span>
+                                <span class="explorer-col explorer-col-size">42 KB</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="projectDetailWindow">
+        <div class="window window-project-detail" data-window-id="project-detail">
+            <div class="window-header">
+                <div class="window-title">
+                    <span class="window-icon">📂</span>
+                    <span id="projectDetailTitle">Project</span>
+                </div>
+                <div class="window-controls">
+                    <button class="window-btn minimize" aria-label="Minimize"></button>
+                    <button class="window-btn maximize" aria-label="Maximize"></button>
+                    <button class="window-btn close" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="project-detail-inner">
+                    <div class="project-slideshow">
+                        <button type="button" class="slideshow-btn slideshow-prev" aria-label="Foto sebelumnya">‹</button>
+                        <div class="slideshow-stage">
+                            <img id="projectSlideshowImg" src="" alt="">
+                            <div id="projectSlideshowPlaceholder" class="project-slideshow-placeholder" hidden>📷</div>
+                        </div>
+                        <button type="button" class="slideshow-btn slideshow-next" aria-label="Foto berikutnya">›</button>
+                        <div class="slideshow-dots" id="projectSlideshowDots" role="tablist" aria-label="Pilih slide"></div>
+                    </div>
+                    <div class="project-detail-body">
+                        <p class="project-detail-desc" id="projectDetailDesc"></p>
+                        <div class="project-detail-tech" id="projectDetailTech"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="skillsWindow">
+        <div class="window" data-window-id="skills">
+            <div class="window-header">
+                <div class="window-title">
+                    <span class="window-icon">⚙️</span>
+                    <span>Skills & Technologies</span>
+                </div>
+                <div class="window-controls">
+                    <button class="window-btn minimize" aria-label="Minimize"></button>
+                    <button class="window-btn maximize" aria-label="Maximize"></button>
+                    <button class="window-btn close" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="skills-sections">
+                    <div class="skills-section">
+                        <h2 class="skills-section-title">Web Developer</h2>
+                        <div class="skills-grid">
+                            <div class="skill-card">
+                                <div class="skill-icon">💻</div>
+                                <h3 class="skill-name">Frontend</h3>
+                                <div class="skill-tags">
+                                    <span class="tag">HTML</span>
+                                    <span class="tag">CSS</span>
+                                    <span class="tag">JavaScript</span>
+                                    <span class="tag">Tailwind CSS</span>
+                                </div>
+                            </div>
+                            <div class="skill-card">
+                                <div class="skill-icon">⚙️</div>
+                                <h3 class="skill-name">Backend</h3>
+                                <div class="skill-tags">
+                                    <span class="tag">Node.js</span>
+                                    <span class="tag">Express.js</span>
+                                    <span class="tag">REST API</span>
+                                    <span class="tag">PHP (basic)</span>
+                                </div>
+                            </div>
+                            <div class="skill-card">
+                                <div class="skill-icon">🔧</div>
+                                <h3 class="skill-name">Database & Tools</h3>
+                                <div class="skill-tags">
+                                    <span class="tag">Git</span>
+                                    <span class="tag">XAMPP</span>
+                                    <span class="tag">MySQL</span>
+                                    <span class="tag">MongoDB</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skills-section">
+                        <h2 class="skills-section-title">AI Engineer</h2>
+                        <div class="skills-grid">
+                            <div class="skill-card">
+                                <div class="skill-icon">🧠</div>
+                                <h3 class="skill-name">Machine Learning</h3>
+                                <div class="skill-tags">
+                                    <span class="tag">Scikit-learn</span>
+                                    <span class="tag">Model Evaluation</span>
+                                    <span class="tag">Feature Engineering</span>
+                                    <span class="tag">Dataset Splitting</span>
+                                </div>
+                            </div>
+                            <div class="skill-card">
+                                <div class="skill-icon">💬</div>
+                                <h3 class="skill-name">NLP & LLM</h3>
+                                <div class="skill-tags">
+                                    <span class="tag">OpenAI API</span>
+                                    <span class="tag">Hugging Face</span>
+                                    <span class="tag">IndoBERT</span>
+                                    <span class="tag">Transformers</span>
+                                </div>
+                            </div>
+                            <div class="skill-card">
+                                <div class="skill-icon">📊</div>
+                                <h3 class="skill-name">Programming & Deep Learning</h3>
+                                <div class="skill-tags">
+                                    <span class="tag">Python</span>
+                                    <span class="tag">PyTorch</span>
+                                    <span class="tag">Numpy</span>
+                                    <span class="tag">Pandas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="experienceWindow">
+        <div class="window" data-window-id="experience">
+            <div class="window-header">
+                <div class="window-title">
+                    <span class="window-icon">💼</span>
+                    <span>Experience</span>
+                </div>
+                <div class="window-controls">
+                    <button class="window-btn minimize" aria-label="Minimize"></button>
+                    <button class="window-btn maximize" aria-label="Maximize"></button>
+                    <button class="window-btn close" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="info-window-content">
+                    <h2 class="info-window-title">Pengalaman</h2>
+                    <div class="timeline-list">
+                        <div class="timeline-item">
+                            <div class="timeline-meta">2025</div>
+                            <h3 class="timeline-title">Software Developer Internship</h3>
+                            <div class="timeline-place">Tempat: <span class="timeline-place-value">CV. OTW Computer Gusaha</span></div>
+                            <p class="timeline-desc">Berperan sebagai Software Developer Intern dengan tanggung jawab mengembangkan aplikasi web, mengimplementasikan fitur baru, meningkatkan performa sistem, serta terlibat dalam debugging, optimasi kode, dan kolaborasi tim.</p>
+                            <div class="evidence-gallery" aria-label="Bukti pengalaman">
+                                <button type="button" class="evidence-thumb" data-viewer-title="Bukti Internship" data-src="experience/internship-1.png">
+                                    <img src="experience/magang.png" alt="Bukti internship 1" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.hidden=false;">
+                                    <div class="evidence-placeholder" hidden>📷</div>
+                                </button>
+                                <button type="button" class="evidence-thumb" data-viewer-title="Bukti Internship" data-src="experience/internship-2.png">
+                                    <img src="experience/magang3.jpeg" alt="Bukti internship 2" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.hidden=false;">
+                                    <div class="evidence-placeholder" hidden>📷</div>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-meta">2024 - 2025</div>
+                            <h3 class="timeline-title">Research Assistant</h3>
+                            <div class="timeline-place">Tempat: <span class="timeline-place-value">Telkom University Surabaya</span></div>
+                            <p class="timeline-desc">Berperan sebagai Research Assistant dalam proyek klasifikasi citra medis untuk deteksi Diabetic Retinopathy, termasuk proses preprocessing data, training model deep learning, serta evaluasi performa model dan Pembuatan website deteksi Diabetic Retinopathy.</p>
+                            <div class="evidence-gallery" aria-label="Bukti pengalaman">
+                                <button type="button" class="evidence-thumb" data-viewer-title="Bukti Research Assistant" data-src="experience/penelitian.jpeg">
+                                    <img src="experience/penelitian.jpeg" alt="Bukti research 1" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.hidden=false;">
+                                    <div class="evidence-placeholder" hidden>📷</div>
+                                </button>
+                                <button type="button" class="evidence-thumb" data-viewer-title="Bukti Research Assistant" data-src="experience/penelitian2.jpeg">
+                                    <img src="experience/penelitian2.jpeg" alt="Bukti research 2" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.hidden=false;">
+                                    <div class="evidence-placeholder" hidden>📷</div>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-meta">2025</div>
+                            <h3 class="timeline-title">Pengabdian Masyarakat - Pengajar AI</h3>
+                            <div class="timeline-place">Tempat: <span class="timeline-place-value">SD At - Taqwa Surabaya</span></div>
+                            <p class="timeline-desc">Mengajarkan konsep dasar Artificial Intelligence kepada siswa SD melalui pendekatan interaktif dan praktik sederhana untuk meningkatkan pemahaman teknologi sejak dini.</p>
+                            <div class="evidence-gallery" aria-label="Bukti pengalaman">
+                                <button type="button" class="evidence-thumb" data-viewer-title="Bukti Web Project" data-src="experience/Ium.jpeg">
+                                    <img src="experience/Ium.jpeg" alt="Bukti Pengabdian Masyarakat" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.hidden=false;">
+                                    <div class="evidence-placeholder" hidden>📷</div>
+                                </button>
+                                <button type="button" class="evidence-thumb" data-viewer-title="Bukti Web Project" data-src="experience/Ium2.jpeg">
+                                    <img src="experience/Ium2.jpeg" alt="Bukti Pengabdian Masyarakat 2" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.hidden=false;">
+                                    <div class="evidence-placeholder" hidden>📷</div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="educationWindow">
+        <div class="window" data-window-id="education">
+            <div class="window-header">
+                <div class="window-title">
+                    <span class="window-icon">🎓</span>
+                    <span>Pendidikan</span>
+                </div>
+                <div class="window-controls">
+                    <button class="window-btn minimize" aria-label="Minimize"></button>
+                    <button class="window-btn maximize" aria-label="Maximize"></button>
+                    <button class="window-btn close" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="info-window-content">
+                    <h2 class="info-window-title">Riwayat Pendidikan</h2>
+                    <div class="timeline-list">
+                        <div class="timeline-item">
+                            <div class="timeline-meta">2022 - Sekarang</div>
+                            <h3 class="timeline-title">S1 Informatika - Telkom University Surabaya</h3>
+                            <p class="timeline-desc">Berfokus pada pengembangan aplikasi berbasis web, machine learning, dan sistem cerdas dengan pengalaman dalam membangun proyek nyata serta mengoptimalkan solusi berbasis teknologi.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-meta">2019 - 2022</div>
+                            <h3 class="timeline-title">Kontruksi Kapal Baja - SMK Negeri 3 Buduran</h3>
+                            <p class="timeline-desc">Mempelajari dasar konstruksi kapal baja, teknik pengelasan, gambar teknik, serta penggunaan alat dan teknologi dalam proses manufaktur dan perakitan kapal.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="certificatesWindow">
+        <div class="window" data-window-id="certificates">
+            <div class="window-header">
+                <div class="window-title">
+                    <span class="window-icon">📜</span>
+                    <span>Sertifikat</span>
+                </div>
+                <div class="window-controls">
+                    <button class="window-btn minimize" aria-label="Minimize"></button>
+                    <button class="window-btn maximize" aria-label="Maximize"></button>
+                    <button class="window-btn close" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="info-window-content">
+                    <h2 class="info-window-title">Sertifikat</h2>
+                    <p class="cert-hint">Klik nama sertifikat untuk melihat foto dan penjelasan.</p>
+                    <div class="cert-links" role="list">
+                        <button type="button" class="cert-link" data-cert="cert-HKI" role="listitem">
+                            <span class="cert-link-icon" aria-hidden="true">📜</span>
+                            <span class="cert-link-title">Sistem Deteksi Dini Retinopati Diabetik Berbasis Website</span>
+                            <span class="cert-link-meta">HKI • 2025</span>
+                        </button>
+                        <button type="button" class="cert-link" data-cert="cert-HKI2" role="listitem">
+                            <span class="cert-link-icon" aria-hidden="true">📜</span>
+                            <span class="cert-link-title">Buku Panduan Sistem Deteksi Dini Retinopati Diabetik Platform Web</span>
+                            <span class="cert-link-meta">HKI • 2025</span>
+                        </button>
+                        <button type="button" class="cert-link" data-cert="cert-Microsoft" role="listitem">
+                            <span class="cert-link-icon" aria-hidden="true">📜</span>
+                            <span class="cert-link-title">Microsoft Azure AI Fundamentals</span>
+                            <span class="cert-link-meta">Sertifikat Microsoft • 2026</span>
+                        </button>
+                        <button type="button" class="cert-link" data-cert="cert-Pengabdian" role="listitem">
+                            <span class="cert-link-icon" aria-hidden="true">📜</span>
+                            <span class="cert-link-title">Pengabdian Masyarakat - Pengajar AI</span>
+                            <span class="cert-link-meta">Sertifikat Pengabdian Masyarakat • 2025</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="certificateViewerWindow">
+        <div class="window window-certificate-viewer" data-window-id="certificate-viewer">
+            <div class="window-header">
+                <div class="window-title">
+                    <span class="window-icon">📜</span>
+                    <span id="certificateViewerTitle">Sertifikat</span>
+                </div>
+                <div class="window-controls">
+                    <button class="window-btn minimize" aria-label="Minimize"></button>
+                    <button class="window-btn maximize" aria-label="Maximize"></button>
+                    <button class="window-btn close" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="certificate-viewer-inner">
+                    <div class="certificate-actions">
+                        <span class="certificate-link-label">Link Sertifikat:</span>
+                        <a id="certificateAccessLink" class="certificate-access-link" href="#" target="_blank" rel="noopener noreferrer">
+                            Akses Sertifikat
+                        </a>
+                    </div>
+                    <div class="certificate-desc" id="certificateDesc"></div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="contactWindow">
+        <div class="window" data-window-id="contact">
+            <div class="window-header">
+                <div class="window-title">
+                    <span class="window-icon">📧</span>
+                    <span>Contact</span>
+                </div>
+                <div class="window-controls">
+                    <button class="window-btn minimize" aria-label="Minimize"></button>
+                    <button class="window-btn maximize" aria-label="Maximize"></button>
+                    <button class="window-btn close" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <p class="contact-text">
+                            Tertarik untuk berkolaborasi atau memiliki pertanyaan? 
+                            Jangan ragu untuk menghubungi saya!
+                        </p>
+                        <div class="social-links">
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=zelighernando@gmail.com" class="social-link" target="_blank" rel="noopener noreferrer">
+                                <span class="social-icon">📧</span>
+                                <span>Email</span>
+                            </a>
+                            <a href="https://linkedin.com/in/hernando-falah-zelig-9ba416315" class="social-link" target="_blank" rel="noopener noreferrer">
+                                <span class="social-icon">💼</span>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="https://github.com/HERNANDO123-PROG" class="social-link" target="_blank" rel="noopener noreferrer">
+                                <span class="social-icon">🐙</span>
+                                <span>GitHub</span>
+                            </a>
+                            <a href="https://instagram.com/hernando.falah" class="social-link" target="_blank" rel="noopener noreferrer">
+                                <span class="social-icon">📸</span>
+                                <span>Instagram</span>
+                            </a>
+                        </div>
+                    </div>
+                    <form class="contact-form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="terminalWindow">
+        <div class="window terminal-window" data-window-id="terminal">
+            <div class="window-header">
+                <div class="window-title">
+                    <span class="window-icon">💻</span>
+                    <span>Terminal</span>
+                </div>
+                <div class="window-controls">
+                    <button class="window-btn minimize" aria-label="Minimize"></button>
+                    <button class="window-btn maximize" aria-label="Maximize"></button>
+                    <button class="window-btn close" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="window-content terminal-body">
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="command" id="typing-text"></span>
+                    <span class="cursor">|</span>
+                </div>
+                <div class="terminal-output">
+                    <p class="output-line">Hello, World! 👋</p>
+                    <p class="output-line">I'm a <span class="highlight">Web Developer &amp; AI Engineer</span></p>
+                    <p class="output-line">Welcome to my digital space...</p>
+                    <p class="output-line">Type 'help' for available commands</p>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="gameWindow">
+        <div class="window game-window" data-window-id="game">
+            <div class="window-header">
+                <div class="window-title">
+                    <span class="window-icon">🎮</span>
+                    <span>Snake Game</span>
+                </div>
+                <div class="window-controls">
+                    <button class="window-btn minimize" aria-label="Minimize"></button>
+                    <button class="window-btn maximize" aria-label="Maximize"></button>
+                    <button class="window-btn close" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="game-container">
+                    <div class="game-sidebar">
+                        <h3 class="game-title">Snake</h3>
+                        <p class="game-instruction">
+                            Gunakan tombol panah pada keyboard untuk menggerakkan ular.
+                            Makan makanan 🔹 untuk menambah skor. Jangan menabrak dinding
+                            atau badan sendiri.
+                        </p>
+                        <div class="game-stats">
+                            <div class="stat">
+                                <span class="stat-label">Score</span>
+                                <span class="stat-value" id="snakeScore">0</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Best</span>
+                                <span class="stat-value" id="snakeBest">0</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="snakeRestart">Restart</button>
+                    </div>
+                    <div class="game-board-wrapper">
+                        <canvas id="snakeCanvas" width="400" height="400"></canvas>
+                        <div class="game-overlay" id="snakeOverlay">
+                            <div class="overlay-content">
+                                <h3 id="snakeStatus">Press any arrow key to start</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="paintWindow">
+        <div class="window paint-window" data-window-id="paint">
+            <div class="window-header">
+                <div class="window-title">
+                    <span class="window-icon">🖌️</span>
+                    <span>Paint</span>
+                </div>
+                <div class="window-controls">
+                    <button class="window-btn minimize" aria-label="Minimize"></button>
+                    <button class="window-btn maximize" aria-label="Maximize"></button>
+                    <button class="window-btn close" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="paint-layout">
+                    <div class="paint-toolbar">
+                        <h3 class="paint-title">Tools</h3>
+                        <div class="paint-colors" id="paintColors">
+                            <button type="button" class="paint-color is-active" data-color="#ffffff" style="--paint-color:#ffffff;"></button>
+                            <button type="button" class="paint-color" data-color="#000000" style="--paint-color:#000000;"></button>
+                            <button type="button" class="paint-color" data-color="#0ea5e9" style="--paint-color:#0ea5e9;"></button>
+                            <button type="button" class="paint-color" data-color="#22c55e" style="--paint-color:#22c55e;"></button>
+                            <button type="button" class="paint-color" data-color="#eab308" style="--paint-color:#eab308;"></button>
+                            <button type="button" class="paint-color" data-color="#f97316" style="--paint-color:#f97316;"></button>
+                            <button type="button" class="paint-color" data-color="#ef4444" style="--paint-color:#ef4444;"></button>
+                        </div>
+                        <button type="button" class="btn btn-primary paint-clear" id="paintClear">Clear Canvas</button>
+                        <p class="paint-hint">
+                            Klik dan drag di area kanvas untuk menggambar.
+                        </p>
+                    </div>
+                    <div class="paint-canvas-wrapper">
+                        <canvas id="paintCanvas" width="640" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="musicWindow">
+        <div class="window music-window" data-window-id="music">
+            <div class="window-header">
+                <div class="window-title">
+                    <span class="window-icon">🎵</span>
+                    <span>Music</span>
+                </div>
+                <div class="window-controls">
+                    <button class="window-btn minimize" aria-label="Minimize"></button>
+                    <button class="window-btn maximize" aria-label="Maximize"></button>
+                    <button class="window-btn close" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="music-layout">
+                    <div class="music-now-playing">
+                        <div class="music-cover"></div>
+                        <div class="music-meta">
+                            <span class="music-now-label">NOW PLAYING</span>
+                            <h3 class="music-title" id="musicTitle">Lo-Fi Beats</h3>
+                            <p class="music-subtitle" id="musicSubtitle">Chill Radio</p>
+                        </div>
+                    </div>
+                    <div class="music-controls">
+                        <button class="music-play-btn" id="musicPlayBtn">▶</button>
+                        <div class="music-volume">
+                            <span class="music-volume-icon">🔊</span>
+                            <input type="range" id="musicVolume" min="0" max="100" value="70">
+                            <span class="music-volume-value" id="musicVolumeValue">70%</span>
+                        </div>
+                    </div>
+                    <div class="music-stations">
+                        <h4 class="music-section-title">Stations</h4>
+                        <div class="music-station-list" id="musicStations">
+                            <button class="music-station is-active" data-title="Lo-Fi Beats" data-subtitle="Chill Radio">
+                                <span class="music-station-name">Lo-Fi Beats</span>
+                                <span class="music-station-genre">Lo-Fi</span>
+                            </button>
+                            <button class="music-station" data-title="Coding Focus" data-subtitle="Instrumental">
+                                <span class="music-station-name">Coding Focus</span>
+                                <span class="music-station-genre">Instrumental</span>
+                            </button>
+                            <button class="music-station" data-title="Midnight Synth" data-subtitle="Synthwave">
+                                <span class="music-station-name">Midnight Synth</span>
+                                <span class="music-station-genre">Synthwave</span>
+                            </button>
+                            <button class="music-station" data-title="Chillhop" data-subtitle="Beats">
+                                <span class="music-station-name">Chillhop</span>
+                                <span class="music-station-genre">Beats</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html>
