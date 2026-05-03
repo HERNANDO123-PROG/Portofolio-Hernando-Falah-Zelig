@@ -82,7 +82,7 @@ class WindowManager {
 
     setupDesktopIcons() {
         document.querySelectorAll('.desktop-icon').forEach(icon => {
-            icon.addEventListener('dblclick', (e) => {
+            icon.addEventListener('click', (e) => {
                 const windowType = icon.dataset.window;
                 this.openWindow(windowType);
             });

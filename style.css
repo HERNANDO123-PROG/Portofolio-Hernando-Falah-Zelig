@@ -214,8 +214,9 @@ input, textarea, [contenteditable="true"] {
 /* Window Styles */
 .window {
     position: absolute;
-    width: 800px;
-    min-width: 400px;
+    /* Ukuran mengikuti viewport agar tidak “membesar” melebihi layar setelah deploy / zoom berbeda */
+    width: min(800px, calc(100vw - 40px));
+    min-width: min(400px, calc(100vw - 24px));
     min-height: 400px;
     background: var(--window-bg);
     border: 1px solid var(--window-border);
@@ -911,6 +912,16 @@ input, textarea, [contenteditable="true"] {
 .output-line:nth-child(2) { animation-delay: 0.3s; }
 .output-line:nth-child(3) { animation-delay: 0.35s; }
 .output-line:nth-child(4) { animation-delay: 0.4s; }
+.output-line:nth-child(5) { animation-delay: 0.45s; }
+
+.terminal-desktop-tip {
+    font-size: 0.8rem;
+    font-style: italic;
+    opacity: 0.92;
+    border-left: 2px solid rgba(0, 217, 255, 0.35);
+    padding-left: 10px;
+    margin-top: 12px !important;
+}
 
 @keyframes outputLineIn {
     from {
