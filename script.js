@@ -1092,6 +1092,11 @@ class WindowManager {
                     printLine("  about  - info singkat tentang kamu");
                     printLine("  skills - ringkasan skill");
                     printLine("  clear  - bersihkan layar");
+                    printLine("  tips   - pintasan antarmuka");
+                    break;
+                case 'tips':
+                    printLine("Seret judul jendela untuk memindahkannya.");
+                    printLine("Di ponsel, ketuk kolom perintah lalu ketik.");
                     break;
                 case 'clear':
                     output.innerHTML = '';

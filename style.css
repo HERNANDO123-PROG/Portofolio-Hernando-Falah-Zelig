@@ -937,6 +937,12 @@ input, textarea, [contenteditable="true"] {
 .output-line:nth-child(3) { animation-delay: 0.35s; }
 .output-line:nth-child(4) { animation-delay: 0.4s; }
 .output-line:nth-child(5) { animation-delay: 0.45s; }
+.output-line:nth-child(6) { animation-delay: 0.5s; }
+
+.terminal-desktop-tip strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
 
 .terminal-desktop-tip {
     font-size: 0.8rem;
