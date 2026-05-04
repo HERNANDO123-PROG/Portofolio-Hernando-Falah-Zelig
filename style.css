@@ -35,6 +35,11 @@
     --noise-opacity: 0.06;
 }
 
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
 html, body {
     height: 100%;
     overflow: hidden;
@@ -938,6 +943,7 @@ input, textarea, [contenteditable="true"] {
 .output-line:nth-child(4) { animation-delay: 0.4s; }
 .output-line:nth-child(5) { animation-delay: 0.45s; }
 .output-line:nth-child(6) { animation-delay: 0.5s; }
+.output-line:nth-child(7) { animation-delay: 0.55s; }
 
 .terminal-desktop-tip strong {
     color: var(--text-primary);
@@ -2350,19 +2356,5 @@ input, textarea, [contenteditable="true"] {
     .slideshow-stage {
         min-height: min(280px, 40vh);
         max-height: 42vh;
-    }
-}
-
-/* Sentuh: target tap tombol kontrol jendela lebih besar */
-@media (pointer: coarse) {
-    .window-controls {
-        gap: 14px;
-    }
-
-    .window-btn {
-        width: 36px;
-        height: 36px;
-        min-width: 36px;
-        min-height: 36px;
     }
 }

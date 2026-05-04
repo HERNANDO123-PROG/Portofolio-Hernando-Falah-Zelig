@@ -85,17 +85,28 @@ class WindowManager {
         window.addEventListener('resize', refitAll);
         if (window.visualViewport) {
             window.visualViewport.addEventListener('resize', refitAll);
-            window.visualViewport.addEventListener('scroll', refitAll);
         }
     }
 
-    /** Lebar/tinggi area tampak (HP mode desktop: lebih sempit dari layout viewport). */
+    /**
+     * Lebar/tinggi untuk penempatan jendela.
+     * Pakai visualViewport hanya bila layout lebih lebar dari area terlihat (mis. mode situs desktop di HP);
+     * di laptop biasa innerWidth dipakai agar tidak salah ukur / reflow aneh.
+     */
     viewportWidth() {
-        return window.visualViewport ? window.visualViewport.width : window.innerWidth;
+        const inner = window.innerWidth;
+        const vv = window.visualViewport?.width;
+        if (vv == null || Number.isNaN(vv)) return inner;
+        if (inner > vv + 32) return vv;
+        return inner;
     }
 
     viewportHeight() {
-        return window.visualViewport ? window.visualViewport.height : window.innerHeight;
+        const inner = window.innerHeight;
+        const vv = window.visualViewport?.height;
+        if (vv == null || Number.isNaN(vv)) return inner;
+        if (inner > vv + 48) return vv;
+        return inner;
     }
 
     constrainWindowToViewport(windowElement) {
@@ -103,6 +114,8 @@ class WindowManager {
 
         const margin = 12;
         const vw = this.viewportWidth();
+        if (vw < 280) return;
+
         const vh = this.viewportHeight() - 50;
 
         const maxW = Math.max(240, vw - margin * 2);
@@ -1097,6 +1110,7 @@ class WindowManager {
                 case 'tips':
                     printLine("Seret judul jendela untuk memindahkannya.");
                     printLine("Di ponsel, ketuk kolom perintah lalu ketik.");
+                    printLine("Di HP, mode situs desktop di browser membantu tampilan mengikuti lebar desktop.");
                     break;
                 case 'clear':
                     output.innerHTML = '';
