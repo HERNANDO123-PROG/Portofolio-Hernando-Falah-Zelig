@@ -35,9 +35,12 @@
     --noise-opacity: 0.06;
 }
 
-/* Form controls gelap di Edge/Chrome (HTTPS) — sama seperti di localhost */
+/* Form controls gelap + ukuran teks stabil (Edge sering “membesar” teks tanpa mengubah zoom %) */
 html {
     color-scheme: dark;
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 html, body {
@@ -47,6 +50,7 @@ html, body {
 
 body {
     font-family: 'Inter', sans-serif;
+    font-size: 1rem;
     background: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.6;
@@ -144,8 +148,9 @@ input, textarea, [contenteditable="true"] {
     box-sizing: border-box;
     width: max-content;
     min-height: 0;
+    /* Di PC pakai 100vh supaya stabil; 100dvh bisa beda antar tab (Edge) dan terasa “nge-zoom” */
     max-height: calc(
-        100dvh - var(--taskbar-height) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 36px
+        100vh - var(--taskbar-height) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 36px
     );
 }
 
