@@ -122,28 +122,25 @@ input, textarea, [contenteditable="true"] {
 
 .desktop-icons {
     /*
-     * Satu kolom seperti desktop Windows: tidak memecah ke banyak kolom
-     * (yang membuat strip ikon “memakan” lebar layar). Jika tidak muat
-     * tinggi, gulir vertikal.
+     * Seperti Windows: isi ke bawah dulu; kalau tinggi tidak cukup,
+     * lanjut kolom berikutnya ke kanan (flex column + wrap + max-height).
      */
     position: relative;
     z-index: 3;
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     align-content: flex-start;
     align-items: flex-start;
-    gap: 18px;
+    gap: 18px 14px;
+    row-gap: 18px;
+    column-gap: 14px;
     padding: max(18px, env(safe-area-inset-top, 0px)) 18px 18px max(18px, env(safe-area-inset-left, 0px));
     box-sizing: border-box;
     width: max-content;
-    max-width: 100%;
     min-height: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
     max-height: calc(
-        100dvh - var(--taskbar-height) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 24px
+        100dvh - var(--taskbar-height) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 36px
     );
 }
 
@@ -879,30 +876,6 @@ input, textarea, [contenteditable="true"] {
     animation: blink 1s infinite;
 }
 
-/* Baris perintah: input asli agar keyboard virtual HP muncul */
-.terminal-command-input {
-    flex: 1;
-    min-width: 0;
-    padding: 4px 6px;
-    margin: 0;
-    border: none;
-    border-radius: 6px;
-    background: rgba(0, 0, 0, 0.35);
-    color: var(--text-primary);
-    font-family: 'Fira Code', monospace;
-    font-size: 0.9rem;
-    outline: none;
-    caret-color: var(--accent-primary);
-}
-
-.terminal-command-input:focus {
-    box-shadow: 0 0 0 1px rgba(0, 217, 255, 0.45);
-}
-
-.terminal-body {
-    cursor: default;
-}
-
 @keyframes blink {
     0%, 50% {
         opacity: 1;
@@ -940,13 +913,6 @@ input, textarea, [contenteditable="true"] {
 .output-line:nth-child(3) { animation-delay: 0.35s; }
 .output-line:nth-child(4) { animation-delay: 0.4s; }
 .output-line:nth-child(5) { animation-delay: 0.45s; }
-.output-line:nth-child(6) { animation-delay: 0.5s; }
-.output-line:nth-child(7) { animation-delay: 0.55s; }
-
-.terminal-desktop-tip strong {
-    color: var(--text-primary);
-    font-weight: 600;
-}
 
 .terminal-desktop-tip {
     font-size: 0.8rem;
@@ -1680,9 +1646,9 @@ input, textarea, [contenteditable="true"] {
 
 /* Certificate viewer window */
 .window-certificate-viewer {
-    width: min(720px, calc(100vw - 24px));
-    min-width: 0;
-    max-width: min(720px, calc(100vw - 16px));
+    width: min(720px, calc(100vw - 40px));
+    min-width: 420px;
+    max-width: 720px;
     border: 2px solid rgba(0, 217, 255, 0.65) !important;
 }
 
@@ -1998,9 +1964,9 @@ input, textarea, [contenteditable="true"] {
 
 /* Jendela Project Detail – slideshow besar + penjelasan */
 .window-project-detail {
-    width: min(1020px, calc(100vw - 24px));
-    min-width: 0;
-    max-width: min(1020px, calc(100vw - 16px));
+    width: min(1020px, calc(100vw - 40px));
+    min-width: 520px;
+    max-width: 1020px;
     border: 2px solid rgba(0, 217, 255, 0.65) !important;
     box-shadow: var(--window-shadow), 0 0 0 1px rgba(0, 217, 255, 0.15) !important;
 }
@@ -2301,7 +2267,9 @@ input, textarea, [contenteditable="true"] {
 /* Responsive Design */
 @media (max-width: 768px) {
     .desktop-icons {
-        gap: 14px;
+        gap: 14px 12px;
+        row-gap: 14px;
+        column-gap: 12px;
         padding: max(15px, env(safe-area-inset-top, 0px)) 15px 15px max(15px, env(safe-area-inset-left, 0px));
         max-height: calc(
             100dvh - var(--taskbar-height) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 28px
@@ -2347,10 +2315,5 @@ input, textarea, [contenteditable="true"] {
 
     .start-text {
         display: none;
-    }
-
-    .slideshow-stage {
-        min-height: min(280px, 40vh);
-        max-height: 42vh;
     }
 }

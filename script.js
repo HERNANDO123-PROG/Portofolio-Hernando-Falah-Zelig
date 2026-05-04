@@ -78,77 +78,6 @@ class WindowManager {
         this.setupTaskbar();
         this.updateTime();
         setInterval(() => this.updateTime(), 1000);
-
-        const refitAll = () => {
-            this.windows.forEach((el) => this.constrainWindowToViewport(el));
-        };
-        window.addEventListener('resize', refitAll);
-        if (window.visualViewport) {
-            window.visualViewport.addEventListener('resize', refitAll);
-        }
-    }
-
-    /**
-     * Lebar/tinggi untuk penempatan jendela.
-     * Pakai visualViewport hanya bila layout lebih lebar dari area terlihat (mis. mode situs desktop di HP);
-     * di laptop biasa innerWidth dipakai agar tidak salah ukur / reflow aneh.
-     */
-    viewportWidth() {
-        const inner = window.innerWidth;
-        const vv = window.visualViewport?.width;
-        if (vv == null || Number.isNaN(vv)) return inner;
-        if (inner > vv + 32) return vv;
-        return inner;
-    }
-
-    viewportHeight() {
-        const inner = window.innerHeight;
-        const vv = window.visualViewport?.height;
-        if (vv == null || Number.isNaN(vv)) return inner;
-        if (inner > vv + 48) return vv;
-        return inner;
-    }
-
-    constrainWindowToViewport(windowElement) {
-        if (!windowElement || windowElement.classList.contains('maximized')) return;
-
-        const margin = 12;
-        const innerW = window.innerWidth;
-        const innerH = window.innerHeight;
-        const vv = window.visualViewport;
-        const useVisual = vv && innerW > vv.width + 32;
-
-        const vw = useVisual ? vv.width : innerW;
-        const vh = (useVisual ? vv.height : innerH) - 50;
-
-        if (vw < 280) return;
-
-        if (useVisual) {
-            const maxW = Math.max(240, vw - margin * 2);
-            windowElement.style.maxWidth = `${maxW}px`;
-            const rect = windowElement.getBoundingClientRect();
-            if (rect.width > maxW) {
-                windowElement.style.width = `${maxW}px`;
-            }
-        } else {
-            windowElement.style.removeProperty('max-width');
-            windowElement.style.removeProperty('width');
-        }
-
-        const r = windowElement.getBoundingClientRect();
-        const w = r.width;
-        const h = r.height;
-
-        let left = parseFloat(windowElement.style.left);
-        let top = parseFloat(windowElement.style.top);
-        if (Number.isNaN(left)) left = r.left;
-        if (Number.isNaN(top)) top = r.top;
-
-        const maxLeft = Math.max(margin, vw - w - margin);
-        const maxTop = Math.max(margin, vh - h - margin);
-
-        windowElement.style.left = `${Math.min(Math.max(margin, left), maxLeft)}px`;
-        windowElement.style.top = `${Math.min(Math.max(margin, top), maxTop)}px`;
     }
 
     setupDesktopIcons() {
@@ -214,15 +143,12 @@ class WindowManager {
         // Posisi pas di tengah layar (setelah di-render agar dapat ukuran asli)
         const rect = windowElement.getBoundingClientRect();
         const taskbarH = 50;
-        const vh = this.viewportHeight();
-        const vw = this.viewportWidth();
-        const centerTop = (vh - taskbarH - rect.height) / 2;
+        const centerTop = (window.innerHeight - taskbarH - rect.height) / 2;
         const topPos = Math.max(30, centerTop);
-        const leftPos = (vw - rect.width) / 2 + offset;
+        const leftPos = (window.innerWidth - rect.width) / 2 + offset;
         windowElement.style.left = `${Math.max(20, leftPos)}px`;
         windowElement.style.top = `${topPos}px`;
         this.windows.set(windowType, windowElement);
-        this.constrainWindowToViewport(windowElement);
 
         // Setup window controls
         this.setupWindowControls(windowElement, windowType);
@@ -291,89 +217,55 @@ class WindowManager {
             e.stopPropagation();
             this.closeWindow(windowType);
         });
+
+        header.addEventListener('mousedown', () => {
+            this.focusWindow(windowType);
+        });
     }
 
     setupDrag(windowElement) {
         const header = windowElement.querySelector('.window-header');
-        if (!header) return;
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
 
-        let dragging = false;
-        let activePointerId = null;
-        let startX;
-        let startY;
-        let origLeft;
-        let origTop;
-
-        const readPos = () => {
-            const st = windowElement.style;
-            let left = parseFloat(st.left);
-            let top = parseFloat(st.top);
-            if (Number.isNaN(left) || Number.isNaN(top)) {
-                const r = windowElement.getBoundingClientRect();
-                left = r.left;
-                top = r.top;
-            }
-            return { left, top };
-        };
-
-        const onPointerMove = (e) => {
-            if (!dragging || e.pointerId !== activePointerId) return;
-            if (windowElement.classList.contains('maximized')) return;
-            e.preventDefault();
-
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
-            const rect = windowElement.getBoundingClientRect();
-            const vw = this.viewportWidth();
-            const vh = this.viewportHeight() - 50;
-
-            let newLeft = origLeft + dx;
-            let newTop = origTop + dy;
-            const maxX = Math.max(0, vw - rect.width);
-            const maxY = Math.max(0, vh - rect.height);
-
-            newLeft = Math.max(0, Math.min(newLeft, maxX));
-            newTop = Math.max(0, Math.min(newTop, maxY));
-
-            windowElement.style.left = `${newLeft}px`;
-            windowElement.style.top = `${newTop}px`;
-        };
-
-        const endDrag = (e) => {
-            if (!dragging) return;
-            dragging = false;
-            if (activePointerId != null) {
-                try {
-                    header.releasePointerCapture(activePointerId);
-                } catch (_) {}
-                activePointerId = null;
-            }
-        };
-
-        header.addEventListener('pointerdown', (e) => {
-            if (windowElement.classList.contains('maximized')) return;
-            if (e.pointerType === 'mouse' && e.button !== 0) return;
+        header.addEventListener('mousedown', (e) => {
             if (e.target.closest('.window-controls')) return;
 
-            dragging = true;
-            activePointerId = e.pointerId;
-            try {
-                header.setPointerCapture(e.pointerId);
-            } catch (_) {}
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
 
-            startX = e.clientX;
-            startY = e.clientY;
-            const pos = readPos();
-            origLeft = pos.left;
-            origTop = pos.top;
-
-            const id = windowElement.dataset.windowId;
-            if (id) this.focusWindow(id);
+            if (e.target === header || header.contains(e.target)) {
+                isDragging = true;
+                this.focusWindow(windowElement.dataset.windowId);
+            }
         });
 
-        header.addEventListener('pointermove', onPointerMove);
-        header.addEventListener('pointerup', endDrag);
-        header.addEventListener('pointercancel', endDrag);
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+
+                xOffset = currentX;
+                yOffset = currentY;
+
+                const rect = windowElement.getBoundingClientRect();
+                const maxX = window.innerWidth - rect.width;
+                const maxY = window.innerHeight - 50 - rect.height;
+
+                windowElement.style.left = `${Math.max(0, Math.min(currentX, maxX))}px`;
+                windowElement.style.top = `${Math.max(0, Math.min(currentY, maxY))}px`;
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
     }
 
     minimizeWindow(windowType) {
@@ -418,13 +310,6 @@ class WindowManager {
         if (windowElement && !windowElement.classList.contains('minimized')) {
             windowElement.style.zIndex = this.zIndexCounter++;
             this.updateTaskbarApp(windowType, true);
-
-            if (windowType === 'terminal') {
-                const input = windowElement.querySelector('#terminal-input');
-                if (input && window.matchMedia('(pointer: fine)').matches) {
-                    requestAnimationFrame(() => input.focus({ preventScroll: true }));
-                }
-            }
         }
     }
 
@@ -891,16 +776,13 @@ class WindowManager {
 
         const rect = windowElement.getBoundingClientRect();
         const taskbarH = 50;
-        const vh = this.viewportHeight();
-        const vw = this.viewportWidth();
-        const centerTop = (vh - taskbarH - rect.height) / 2;
+        const centerTop = (window.innerHeight - taskbarH - rect.height) / 2;
         const topPos = Math.max(24, centerTop);
         const offset = this.windows.size * 24;
-        windowElement.style.left = `${Math.max(16, (vw - rect.width) / 2 + offset)}px`;
+        windowElement.style.left = `${Math.max(16, (window.innerWidth - rect.width) / 2 + offset)}px`;
         windowElement.style.top = `${topPos}px`;
 
         this.windows.set(windowId, windowElement);
-        this.constrainWindowToViewport(windowElement);
 
         this.setupWindowControls(windowElement, windowId);
         this.setupDrag(windowElement);
@@ -972,16 +854,13 @@ class WindowManager {
 
         const rect = windowElement.getBoundingClientRect();
         const taskbarH = 50;
-        const vh = this.viewportHeight();
-        const vw = this.viewportWidth();
-        const centerTop = (vh - taskbarH - rect.height) / 2;
+        const centerTop = (window.innerHeight - taskbarH - rect.height) / 2;
         const topPos = Math.max(24, centerTop);
         const offset = this.windows.size * 24;
-        windowElement.style.left = `${Math.max(16, (vw - rect.width) / 2 + offset)}px`;
+        windowElement.style.left = `${Math.max(16, (window.innerWidth - rect.width) / 2 + offset)}px`;
         windowElement.style.top = `${topPos}px`;
 
         this.windows.set(windowId, windowElement);
-        this.constrainWindowToViewport(windowElement);
 
         this.setupWindowControls(windowElement, windowId);
         this.setupDrag(windowElement);
@@ -1038,16 +917,13 @@ class WindowManager {
 
         const rect = windowElement.getBoundingClientRect();
         const taskbarH = 50;
-        const vh = this.viewportHeight();
-        const vw = this.viewportWidth();
-        const centerTop = (vh - taskbarH - rect.height) / 2;
+        const centerTop = (window.innerHeight - taskbarH - rect.height) / 2;
         const topPos = Math.max(24, centerTop);
         const offset = this.windows.size * 24;
-        windowElement.style.left = `${Math.max(16, (vw - rect.width) / 2 + offset)}px`;
+        windowElement.style.left = `${Math.max(16, (window.innerWidth - rect.width) / 2 + offset)}px`;
         windowElement.style.top = `${topPos}px`;
 
         this.windows.set(windowId, windowElement);
-        this.constrainWindowToViewport(windowElement);
         this.setupWindowControls(windowElement, windowId);
         this.setupDrag(windowElement);
         this.addToTaskbar(windowId);
@@ -1089,9 +965,11 @@ class WindowManager {
     }
 
     initTerminalTyping(windowElement) {
-        const input = windowElement.querySelector('#terminal-input');
+        const typingText = windowElement.querySelector('#typing-text');
         const output = windowElement.querySelector('.terminal-output');
-        if (!input || !output) return;
+        if (!typingText || !output) return;
+
+        let buffer = '';
 
         const printLine = (text, cssClass = 'output-line') => {
             const p = document.createElement('p');
@@ -1114,12 +992,6 @@ class WindowManager {
                     printLine("  about  - info singkat tentang kamu");
                     printLine("  skills - ringkasan skill");
                     printLine("  clear  - bersihkan layar");
-                    printLine("  tips   - pintasan antarmuka");
-                    break;
-                case 'tips':
-                    printLine("Seret judul jendela untuk memindahkannya.");
-                    printLine("Di ponsel, ketuk kolom perintah lalu ketik.");
-                    printLine("Di HP, mode situs desktop di browser membantu tampilan mengikuti lebar desktop.");
                     break;
                 case 'clear':
                     output.innerHTML = '';
@@ -1136,72 +1008,35 @@ class WindowManager {
             }
         };
 
-        const onInputKeydown = (e) => {
+        const keyHandler = (e) => {
             if (!windowElement.isConnected) {
-                input.removeEventListener('keydown', onInputKeydown);
+                window.removeEventListener('keydown', keyHandler);
                 return;
             }
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                handleCommand(input.value);
-                input.value = '';
-            }
-        };
 
-        input.addEventListener('keydown', onInputKeydown);
-
-        const body = windowElement.querySelector('.terminal-body');
-        if (body) {
-            body.addEventListener('pointerdown', (e) => {
-                if (e.target === input || input.contains(e.target)) return;
-                if (e.target.closest('.window-header')) return;
-                input.focus({ preventScroll: true });
-            });
-        }
-
-        const finePointer = window.matchMedia('(pointer: fine)').matches;
-        const docKeyHandler = (e) => {
-            if (!windowElement.isConnected) {
-                document.removeEventListener('keydown', docKeyHandler);
-                return;
-            }
-            if (!finePointer) return;
-            const ae = document.activeElement;
-            if (ae === input) return;
-            if (ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA' || ae.tagName === 'SELECT' || ae.isContentEditable) && !ae.closest('.terminal-window')) {
-                return;
-            }
-            const term = this.windows.get('terminal');
-            if (!term || term !== windowElement || term.classList.contains('minimized')) return;
-            const z = parseInt(term.style.zIndex, 10) || 0;
-            let topZ = 0;
-            this.windows.forEach((w) => {
-                if (!w.classList.contains('minimized')) {
-                    topZ = Math.max(topZ, parseInt(w.style.zIndex, 10) || 0);
-                }
-            });
-            if (z < topZ) return;
-
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                handleCommand(input.value);
-                input.value = '';
-                return;
-            }
             if (e.key === 'Backspace') {
+                buffer = buffer.slice(0, -1);
+                typingText.textContent = buffer;
                 e.preventDefault();
-                input.value = input.value.slice(0, -1);
                 return;
             }
-            if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+
+            if (e.key === 'Enter') {
+                handleCommand(buffer);
+                buffer = '';
+                typingText.textContent = '';
                 e.preventDefault();
-                input.value += e.key;
+                return;
+            }
+
+            if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                buffer += e.key;
+                typingText.textContent = buffer;
+                e.preventDefault();
             }
         };
 
-        if (finePointer) {
-            document.addEventListener('keydown', docKeyHandler);
-        }
+        window.addEventListener('keydown', keyHandler);
     }
 
     updateTime() {
