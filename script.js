@@ -113,17 +113,26 @@ class WindowManager {
         if (!windowElement || windowElement.classList.contains('maximized')) return;
 
         const margin = 12;
-        const vw = this.viewportWidth();
+        const innerW = window.innerWidth;
+        const innerH = window.innerHeight;
+        const vv = window.visualViewport;
+        const useVisual = vv && innerW > vv.width + 32;
+
+        const vw = useVisual ? vv.width : innerW;
+        const vh = (useVisual ? vv.height : innerH) - 50;
+
         if (vw < 280) return;
 
-        const vh = this.viewportHeight() - 50;
-
-        const maxW = Math.max(240, vw - margin * 2);
-        windowElement.style.maxWidth = `${maxW}px`;
-
-        const rect = windowElement.getBoundingClientRect();
-        if (rect.width > maxW) {
-            windowElement.style.width = `${maxW}px`;
+        if (useVisual) {
+            const maxW = Math.max(240, vw - margin * 2);
+            windowElement.style.maxWidth = `${maxW}px`;
+            const rect = windowElement.getBoundingClientRect();
+            if (rect.width > maxW) {
+                windowElement.style.width = `${maxW}px`;
+            }
+        } else {
+            windowElement.style.removeProperty('max-width');
+            windowElement.style.removeProperty('width');
         }
 
         const r = windowElement.getBoundingClientRect();
