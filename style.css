@@ -876,6 +876,25 @@ input, textarea, [contenteditable="true"] {
     animation: blink 1s infinite;
 }
 
+.terminal-command-input {
+    flex: 1;
+    min-width: 0;
+    padding: 4px 6px;
+    margin: 0;
+    border: none;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.35);
+    color: var(--text-primary);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+    outline: none;
+    caret-color: var(--accent-primary);
+}
+
+.terminal-command-input:focus {
+    box-shadow: 0 0 0 1px rgba(0, 217, 255, 0.45);
+}
+
 @keyframes blink {
     0%, 50% {
         opacity: 1;
@@ -913,6 +932,12 @@ input, textarea, [contenteditable="true"] {
 .output-line:nth-child(3) { animation-delay: 0.35s; }
 .output-line:nth-child(4) { animation-delay: 0.4s; }
 .output-line:nth-child(5) { animation-delay: 0.45s; }
+.output-line:nth-child(6) { animation-delay: 0.5s; }
+
+.terminal-desktop-tip strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
 
 .terminal-desktop-tip {
     font-size: 0.8rem;
@@ -1646,9 +1671,9 @@ input, textarea, [contenteditable="true"] {
 
 /* Certificate viewer window */
 .window-certificate-viewer {
-    width: min(720px, calc(100vw - 40px));
-    min-width: 420px;
-    max-width: 720px;
+    width: min(720px, calc(100vw - 24px));
+    min-width: 0;
+    max-width: min(720px, calc(100vw - 16px));
     border: 2px solid rgba(0, 217, 255, 0.65) !important;
 }
 
@@ -1964,9 +1989,9 @@ input, textarea, [contenteditable="true"] {
 
 /* Jendela Project Detail – slideshow besar + penjelasan */
 .window-project-detail {
-    width: min(1020px, calc(100vw - 40px));
-    min-width: 520px;
-    max-width: 1020px;
+    width: min(1020px, calc(100vw - 24px));
+    min-width: 0;
+    max-width: min(1020px, calc(100vw - 16px));
     border: 2px solid rgba(0, 217, 255, 0.65) !important;
     box-shadow: var(--window-shadow), 0 0 0 1px rgba(0, 217, 255, 0.15) !important;
 }
@@ -2315,5 +2340,10 @@ input, textarea, [contenteditable="true"] {
 
     .start-text {
         display: none;
+    }
+
+    .slideshow-stage {
+        min-height: min(280px, 40vh);
+        max-height: 42vh;
     }
 }
