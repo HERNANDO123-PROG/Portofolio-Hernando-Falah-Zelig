@@ -792,6 +792,12 @@ class WindowManager {
                 fullDesc: 'Chatbot berbasis NLP yang dibangun menggunakan model DialoGPT-large dan di-fine-tune dengan dataset khusus domain fitness. Model ini mampu memahami konteks percakapan dan menghasilkan respons yang relevan terkait workout, latihan, dan kesehatan. Implementasi mencakup preprocessing data, fine-tuning model transformer, serta deployment chatbot berbasis web untuk interaksi real-time.',
                 images: ['projects/Chatbot.png', 'projects/Chatbot2.png', 'projects/Chatbot3.png'],
                 tech: ['Python', 'Hugging Face Transformers', 'PyTorch', 'DialoGPT-large (fine-tuned)','FastAPI (backend API)','HTML, CSS, JavaScript (frontend)']
+            },
+            prediction: {
+                title: 'Prediksi Perjalanan Taksi dan Implikasi Biaya Kemacetan dengan Algoritma Decision Tree',
+                fullDesc: 'Membangun sistem prediksi perjalanan taksi menggunakan algoritma Decision Tree untuk menganalisis pola rute, waktu tempuh, dan estimasi biaya akibat kemacetan. Proyek ini memanfaatkan data perjalanan taksi untuk memprediksi durasi perjalanan berdasarkan faktor seperti lokasi penjemputan, tujuan, waktu keberangkatan, kondisi lalu lintas, dan jarak tempuh. Hasil prediksi divisualisasikan dalam bentuk dashboard interaktif berbasis web yang menampilkan analisis kemacetan, estimasi tarif perjalanan, serta perbandingan biaya pada kondisi lalu lintas normal dan padat. Sistem ini bertujuan membantu pengguna memahami dampak kemacetan terhadap efisiensi perjalanan dan pengeluaran transportasi.',
+                images: ['projects/predict 1.png', 'projects/predict 2.png', 'projects/predict 3.png'],
+                tech: ['HTML', 'CSS', 'JavaScript']
             }
         };
 
@@ -827,7 +833,7 @@ class WindowManager {
             techEl.appendChild(span);
         });
 
-        const placeholders = { diabetic_retinopathy: '🖥️', odigi: '🖥️', chatbot: '🤖' };
+        const placeholders = { diabetic_retinopathy: '🖥️', odigi: '🖥️', chatbot: '🤖', prediction: '🖥️' };
         const placeholderEmoji = placeholders[projectId] || '📷';
         const slides = data.images;
         let index = 0;
