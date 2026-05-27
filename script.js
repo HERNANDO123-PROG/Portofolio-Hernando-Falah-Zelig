@@ -796,7 +796,7 @@ class WindowManager {
             predict: {
                 title: 'Prediksi Kemacetan Taksi (Decision Tree)',
                 fullDesc: 'Membangun sistem prediksi perjalanan taksi menggunakan algoritma Decision Tree untuk menganalisis pola rute, waktu tempuh, dan estimasi biaya akibat kemacetan. Proyek ini memanfaatkan data perjalanan taksi untuk memprediksi durasi perjalanan berdasarkan faktor seperti lokasi penjemputan, tujuan, waktu keberangkatan, kondisi lalu lintas, dan jarak tempuh. Hasil prediksi divisualisasikan dalam bentuk dashboard interaktif berbasis web yang menampilkan analisis kemacetan, estimasi tarif perjalanan, serta perbandingan biaya pada kondisi lalu lintas normal dan padat. Sistem ini bertujuan membantu pengguna memahami dampak kemacetan terhadap efisiensi perjalanan dan pengeluaran transportasi.',
-                images: ['projects/Predict 1.png', 'projects/Predict 2.png', 'projects/Predict 3.png'],
+                images: ['projects/Predict1.png', 'projects/Predict2.png', 'projects/Predict3.png'],
                 tech: ['Python', 'Tkinter', 'Pandas', 'Scikit-learn', 'Decision Tree', 'NumPy']
             }
         };
