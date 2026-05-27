@@ -296,6 +296,7 @@ input, textarea, [contenteditable="true"] {
     padding: 0 14px;
     cursor: move;
     user-select: none;
+    min-width: 0;
 }
 
 .window-title {
@@ -306,6 +307,15 @@ input, textarea, [contenteditable="true"] {
     font-size: 0.9rem;
     color: var(--text-primary);
     font-weight: 500;
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+}
+
+.window-title span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .window-icon {
@@ -315,6 +325,7 @@ input, textarea, [contenteditable="true"] {
 .window-controls {
     display: flex;
     gap: 8px;
+    flex-shrink: 0;
 }
 
 .window-btn {
@@ -2014,9 +2025,9 @@ input, textarea, [contenteditable="true"] {
 
 /* Jendela Project Detail – slideshow besar + penjelasan */
 .window-project-detail {
-    width: min(1020px, calc(100vw - 24px));
+    width: min(960px, calc(100vw - 32px));
     min-width: 0;
-    max-width: min(1020px, calc(100vw - 16px));
+    max-width: min(960px, calc(100vw - 32px));
     border: 2px solid rgba(0, 217, 255, 0.65) !important;
     box-shadow: var(--window-shadow), 0 0 0 1px rgba(0, 217, 255, 0.15) !important;
 }

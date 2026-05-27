@@ -794,9 +794,9 @@ class WindowManager {
                 tech: ['Python', 'Hugging Face Transformers', 'PyTorch', 'DialoGPT-large (fine-tuned)','FastAPI (backend API)','HTML, CSS, JavaScript (frontend)']
             },
             predict: {
-                title: 'Perjalanan Prediksi Kemacetan Taksi dengan Decision Tree',
+                title: 'Prediksi Kemacetan Taksi (Decision Tree)',
                 fullDesc: 'Membangun sistem prediksi perjalanan taksi menggunakan algoritma Decision Tree untuk menganalisis pola rute, waktu tempuh, dan estimasi biaya akibat kemacetan. Proyek ini memanfaatkan data perjalanan taksi untuk memprediksi durasi perjalanan berdasarkan faktor seperti lokasi penjemputan, tujuan, waktu keberangkatan, kondisi lalu lintas, dan jarak tempuh. Hasil prediksi divisualisasikan dalam bentuk dashboard interaktif berbasis web yang menampilkan analisis kemacetan, estimasi tarif perjalanan, serta perbandingan biaya pada kondisi lalu lintas normal dan padat. Sistem ini bertujuan membantu pengguna memahami dampak kemacetan terhadap efisiensi perjalanan dan pengeluaran transportasi.',
-                images: ['projects/predict1.png', 'projects/predict2.png', 'projects/predict3.png'],
+                images: ['projects/Predict 1.png', 'projects/Predict 2.png', 'projects/Predict 3.png'],
                 tech: ['Python', 'Tkinter', 'Pandas', 'Scikit-learn', 'Decision Tree', 'NumPy']
             }
         };
@@ -833,7 +833,7 @@ class WindowManager {
             techEl.appendChild(span);
         });
 
-        const placeholders = { diabetic_retinopathy: '🖥️', odigi: '🖥️', chatbot: '🤖', portfolio: '🖥️' };
+        const placeholders = { diabetic_retinopathy: '🖥️', odigi: '🖥️', chatbot: '🤖', predict: '🖥️', portfolio: '🖥️' };
         const placeholderEmoji = placeholders[projectId] || '📷';
         const slides = data.images;
         let index = 0;
